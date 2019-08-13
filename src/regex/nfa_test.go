@@ -3,6 +3,7 @@ package regex
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestRe2post(t *testing.T) {
@@ -10,6 +11,14 @@ func TestRe2post(t *testing.T) {
 		re   string
 		post string
 	}{
+		{
+			re:   "a(b|c)d",
+			post: "abc|.d.",
+		},
+		{
+			re:   "a(b|c)*",
+			post: "abc|*.",
+		},
 		{
 			re:   "a(b|c)*d",
 			post: "abc|*.d.",
@@ -68,117 +77,20 @@ func TestPreprocess(t *testing.T) {
 	}
 }
 
-func TestMatch(t *testing.T) {
-	tc := []struct {
-		re     string
-		target string
-		match  bool
-	}{
-		{
-			re:     "abcdefg",
-			target: "abcdefg",
-			match:  true,
-		},
-		{
-			re:     "(a|b)*a",
-			target: "ababababab",
-			match:  false,
-		},
-		{
-			re:     "(a|b)*a",
-			target: "aaaaaaaaba",
-			match:  true,
-		},
-		{
-			re:     "(a|b)*a",
-			target: "aaaaaabac",
-			match:  false,
-		},
-		{
-			re:     "a(b|c)*d",
-			target: "abccbcccd",
-			match:  true,
-		},
-		{
-			re:     "a(b|c)*d",
-			target: "abccbcccde",
-			match:  false,
-		},
-		{
-			re:     "a(b|c)+d",
-			target: "acd",
-			match:  true,
-		},
-		{
-			re:     "a(b|c)+d",
-			target: "ad",
-			match:  false,
-		},
-		{
-			re:     "a(b|c)+d",
-			target: "abbbbd",
-			match:  true,
-		},
-		{
-			re:     "a(b|c)?d",
-			target: "acd",
-			match:  true,
-		},
-		{
-			re:     "a(b|c)?d",
-			target: "accd",
-			match:  false,
-		},
-		{
-			re:     "a(b|c)?d",
-			target: "ad",
-			match:  true,
-		},
-		{
-			re:     "(a*)(a*)(a*)(a*)(a*)",
-			target: "",
-			match:  true,
-		},
-		{
-			re:     "(a*)(a*)(a*)(a*)(a*)",
-			target: "a",
-			match:  true,
-		},
-		{
-			re:     "(a*)(a*)(a*)(a*)(a*)",
-			target: "aaaaaaa",
-			match:  true,
-		},
-		{
-			re:     "(a*)(a*)(a*)(a*)(a*)",
-			target: "aba",
-			match:  false,
-		},
-		{
-			re:     "",
-			target: "",
-			match:  true,
-		},
-		{
-			re:     "    ",
-			target: "",
-			match:  false,
-		},
-		{
-			re:     "    ",
-			target: "    ",
-			match:  true,
-		},
-	}
-
-	for _, c := range tc {
-		fmt.Printf("start check re %s and target %s\n", c.re, c.target)
+func TestNfaMatch(t *testing.T) {
+	for _, c := range regcases {
 		n := post2nfa(re2post(c.re))
 
+		start := time.Now()
 		r := n.match(c.target)
 
 		if r != c.match {
 			t.Fatalf("expected %v for re %s and target %s,actual %v\n", c.match, c.re, c.target, r)
 		}
+
+		cost := time.Now().Sub(start)
+
+		fmt.Printf("========NFA:case [%s:%s] is ok and cost %d ns================\n", c.re, c.target, cost)
+
 	}
 }

@@ -17,7 +17,7 @@ Denis Kyashif
 
 Ken Thompson
 
-- [Regular Expression Search Algorithm](http://delivery.acm.org/10.1145/370000/363387/p419-thompson.pdf?ip=203.205.141.50&id=363387&acc=ACTIVE%20SERVICE&key=39FCDE838982416F%2E39FCDE838982416F%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&__acm__=1565526479_350859ad42cb7071b842c01c47e84f23)
+- [Regular Expression Search Algorithm](https://www.fing.edu.uy/inco/cursos/intropln/material/p419-thompson.pdf)
 
 Rob Pike
 
