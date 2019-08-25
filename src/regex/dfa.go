@@ -22,11 +22,11 @@ type stateList struct {
 }
 
 type dfa struct {
-	T     map[string]stateList
-	start stateList
+	T     map[string]*stateList
+	start *stateList
 }
 
-func (s stateList) key() string {
+func (s *stateList) key() string {
 	if v, ok := keyDict[s.id]; ok {
 		return v
 	}
@@ -45,9 +45,9 @@ func (s stateList) key() string {
 	return rs
 }
 
-func NewStateList(curState []*state) stateList {
+func NewStateList(curState []*state) *stateList {
 	dfaId++
-	return stateList{curState, isEndState(curState), dfaId}
+	return &stateList{curState, isEndState(curState), dfaId}
 }
 
 func isEndState(states []*state) bool {
@@ -60,7 +60,7 @@ func isEndState(states []*state) bool {
 	return false
 }
 
-func epsilon_closure(from stateList) stateList {
+func epsilon_closure(from *stateList) *stateList {
 	dict := make(map[int]bool)
 	var curState []*state
 	for _, s := range from.stateList {
@@ -70,7 +70,7 @@ func epsilon_closure(from stateList) stateList {
 	return NewStateList(curState)
 }
 
-func delta(from stateList, c string) stateList {
+func delta(from *stateList, c string) *stateList {
 	var rs []*state
 
 	for _, f := range from.stateList {
@@ -122,10 +122,10 @@ func nfa2dfa(rs string, n *nfa) *dfa {
 	existMap := make(map[string]bool)
 	existMap[q0.key()] = true
 
-	var workList []stateList
+	var workList []*stateList
 	workList = append(workList, q0)
 
-	T := make(map[string]stateList)
+	T := make(map[string]*stateList)
 
 	for len(workList) > 0 {
 		q := workList[0]
