@@ -3,7 +3,11 @@
 自己写的正则表达式引擎
 
 - [参照Russ Cox的paper实现的thompson NFA正则引擎](https://github.com/mjaow/regex/blob/master/src/regex/nfa.go) 
+- [基于子集构造法实现的DFA正则引擎](https://github.com/mjaow/regex/blob/master/src/regex/dfa.go) 
 
+NFA和DFA性能对比
+
+- [NFA vs DFA](https://github.com/mjaow/regex/blob/master/doc/perf.md)
 
 收集各种版本正则表达式的实现
 
