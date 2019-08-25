@@ -6,9 +6,19 @@ import (
 	"strings"
 )
 
+var (
+	dfaId   int
+	keyDict map[int]string
+)
+
+func init() {
+	keyDict = make(map[int]string)
+}
+
 type stateList struct {
 	stateList []*state
 	isEnd     bool
+	id        int
 }
 
 type dfa struct {
@@ -17,6 +27,9 @@ type dfa struct {
 }
 
 func (s stateList) key() string {
+	if v, ok := keyDict[s.id]; ok {
+		return v
+	}
 	var l []string
 
 	for _, v := range s.stateList {
@@ -25,11 +38,16 @@ func (s stateList) key() string {
 
 	sort.Strings(l)
 
-	return strings.Join(l, "-")
+	rs := strings.Join(l, "-")
+
+	keyDict[s.id] = rs
+
+	return rs
 }
 
 func NewStateList(curState []*state) stateList {
-	return stateList{curState, isEndState(curState)}
+	dfaId++
+	return stateList{curState, isEndState(curState), dfaId}
 }
 
 func isEndState(states []*state) bool {
