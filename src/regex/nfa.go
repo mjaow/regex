@@ -37,6 +37,7 @@ func (n *nfa) match(target string) bool {
 
 	var curState []*state
 
+	// 获取下一个step可能的所有状态
 	dfsNextState(n.start, &curState, make(map[int]bool))
 
 	for _, c := range target {
