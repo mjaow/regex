@@ -1,3 +1,7 @@
+## 说明
+
+下面`DFA:case [a(b|c)kk:abkk] is ok and cost 617 ns`表示，这是DFA引擎的测试case，正则`a(b|c)kk`匹配字符串`abkk`结果符合预期，耗时617ns
+
 ## DFA performance
 
 - DFA:case [a(b|c)kk:abkk] is ok and cost 617 ns
