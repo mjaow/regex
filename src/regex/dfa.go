@@ -45,6 +45,10 @@ func (s *stateList) key() string {
 	return rs
 }
 
+func (s *stateList) key2NextState(c rune) string {
+	return s.key() + "-" + string(c)
+}
+
 func NewStateList(curState []*state) *stateList {
 	dfaId++
 	return &stateList{curState, isEndState(curState), dfaId}
@@ -134,7 +138,7 @@ func nfa2dfa(rs string, n *nfa) *dfa {
 		for _, c := range rs {
 			t := epsilon_closure(delta(q, string(c)))
 			if len(t.stateList) > 0 {
-				T[q.key()+"-"+string(c)] = t
+				T[q.key2NextState(c)] = t
 				k := t.key()
 
 				if _, ok := existMap[k]; !ok {
@@ -156,10 +160,8 @@ func (d *dfa) match(target string) bool {
 
 	cur := d.start
 
-	for i := range target {
-		ch := string(target[i])
-
-		if next, ok := d.T[cur.key()+"-"+ch]; ok {
+	for _, ch := range target {
+		if next, ok := d.T[cur.key2NextState(ch)]; ok {
 			cur = next
 		} else {
 			return false
