@@ -1,6 +1,6 @@
 # regex
 
-My own RE engine
+My RE engine
 
 - [thompson NFA version](https://github.com/mjaow/regex/blob/master/src/regex/nfa.go) 
 - [DFA version](https://github.com/mjaow/regex/blob/master/src/regex/dfa.go) 
